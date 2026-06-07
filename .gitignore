@@ -1,0 +1,65 @@
+# Terraform
+.terraform/
+
+# State files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Plan files
+*.tfplan
+*.plan
+
+# Variable files (may contain secrets)
+*.auto.tfvars
+*.auto.tfvars.json
+terraform.tfvars
+terraform.tfvars.json
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI config
+.terraformrc
+terraform.rc
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# TFLint
+.tflint.hcl
+
+# Checkov
+.checkov/
+
+# tfsec
+.tfsec/
+
+# Terragrunt
+.terragrunt-cache/
+
+# Testing
+test-results/
+
+# Environment files
+.env
+.env.*
+
+# Local examples state
+examples/**/.terraform/
+examples/**/*.tfstate
+examples/**/*.tfstate.*
