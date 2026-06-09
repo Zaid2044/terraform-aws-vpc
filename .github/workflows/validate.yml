@@ -3,8 +3,8 @@ name: Terraform Module Validation
 on:
   pull_request:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
 
 jobs:
   validate:
