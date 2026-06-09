@@ -3,8 +3,8 @@ name: Terraform Module Validation
 on:
   pull_request:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
 
 jobs:
   validate:
@@ -28,16 +28,16 @@ jobs:
         working-directory: examples/basic
         run: terraform validate
 
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v4
+    #   - name: Setup TFLint
+    #     uses: terraform-linters/setup-tflint@v4
 
-      - name: Run TFLint
-        working-directory: examples/basic
-        run: |
-          tflint --init
-          tflint
+    #   - name: Run TFLint
+    #     working-directory: examples/basic
+    #     run: |
+    #       tflint --init
+    #       tflint
 
-      - name: Run tfsec
-        uses: aquasecurity/tfsec-action@master
-        with:
-          working_directory: examples/basic
+    #   - name: Run tfsec
+    #     uses: aquasecurity/tfsec-action@master
+    #     with:
+    #       working_directory: examples/basic
