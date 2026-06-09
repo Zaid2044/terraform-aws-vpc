@@ -8,12 +8,7 @@ on:
 
 jobs:
   validate:
-    name: Validate Terraform Module
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: examples/basic
 
     steps:
       - name: Checkout Repository
@@ -23,23 +18,26 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Format Check
-        run: terraform fmt -check -recursive ../..
+        run: terraform fmt -check -recursive
 
       - name: Terraform Init
+        working-directory: examples/basic
         run: terraform init
 
       - name: Terraform Validate
+        working-directory: examples/basic
         run: terraform validate
 
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
       - name: Run TFLint
+        working-directory: examples/basic
         run: |
           tflint --init
           tflint
 
       - name: Run tfsec
-        uses: aquasecurity/tfsec-action@v1.0.3
+        uses: aquasecurity/tfsec-action@master
         with:
-          working_directory: .
+          working_directory: examples/basic
