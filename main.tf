@@ -70,3 +70,35 @@ resource "aws_subnet" "private_db" {
     }
   )
 }
+
+resource "aws_eip" "nat" {
+  for_each = local.public_subnet_config
+
+  domain = "vpc"
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-nat-eip-${each.key}"
+    }
+  )
+}
+
+resource "aws_nat_gateway" "this" {
+  for_each = local.public_subnet_config
+
+  allocation_id = aws_eip.nat[each.key].id
+
+  subnet_id = aws_subnet.public[each.key].id
+
+  depends_on = [
+    aws_internet_gateway.this
+  ]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-nat-${each.key}"
+    }
+  )
+}
