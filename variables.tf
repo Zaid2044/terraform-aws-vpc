@@ -4,17 +4,17 @@ variable "project" {
 
   validation {
     condition     = length(trimspace(var.project)) > 0
-    error_message = "project cannot be empty."
+    error_message = "Project name cannot be empty."
   }
 }
 
 variable "environment" {
-  description = "Environment name (e.g. dev, stage, prod)"
+  description = "Deployment environment"
   type        = string
 
   validation {
-    condition     = contains(["dev", "stage", "prod"], var.environment)
-    error_message = "environment must be one of: dev, stage, prod."
+    condition     = contains(["dev", "stage", "prod"], lower(var.environment))
+    error_message = "Environment must be one of: dev, stage, prod."
   }
 }
 
@@ -29,47 +29,78 @@ variable "vpc_cidr" {
 }
 
 variable "availability_zones" {
-  description = "Availability zones keyed by logical name"
+  description = "List of Availability Zones"
 
-  type = map(string)
+  type = list(string)
 
   validation {
-    condition     = length(var.availability_zones) == 2
-    error_message = "Exactly 2 availability zones must be provided."
+    condition     = length(var.availability_zones) >= 2
+    error_message = "At least 2 Availability Zones must be provided."
   }
 }
 
 variable "public_subnets" {
-  description = "Public subnet CIDRs keyed by AZ"
+  description = "Map of public subnet CIDRs"
 
   type = map(string)
 
   validation {
-    condition     = length(var.public_subnets) == 2
-    error_message = "Exactly 2 public subnets must be provided."
+    condition = alltrue([
+      for cidr in values(var.public_subnets) :
+      can(cidrhost(cidr, 0))
+    ])
+    error_message = "All public subnet CIDRs must be valid."
   }
 }
 
 variable "private_app_subnets" {
-  description = "Private application subnet CIDRs keyed by AZ"
+  description = "Map of private application subnet CIDRs"
 
   type = map(string)
 
   validation {
-    condition     = length(var.private_app_subnets) == 2
-    error_message = "Exactly 2 private application subnets must be provided."
+    condition = alltrue([
+      for cidr in values(var.private_app_subnets) :
+      can(cidrhost(cidr, 0))
+    ])
+    error_message = "All private application subnet CIDRs must be valid."
   }
 }
 
 variable "private_db_subnets" {
-  description = "Private database subnet CIDRs keyed by AZ"
+  description = "Map of private database subnet CIDRs"
 
-  type = map(string)
+  type    = map(string)
+  default = {}
 
   validation {
-    condition     = length(var.private_db_subnets) == 2
-    error_message = "Exactly 2 private database subnets must be provided."
+    condition = alltrue([
+      for cidr in values(var.private_db_subnets) :
+      can(cidrhost(cidr, 0))
+    ])
+    error_message = "All database subnet CIDRs must be valid."
   }
+}
+
+variable "enable_nat_gateway" {
+  description = "Whether to create a NAT Gateway"
+
+  type    = bool
+  default = false
+}
+
+variable "enable_dns_support" {
+  description = "Enable DNS support in the VPC"
+
+  type    = bool
+  default = true
+}
+
+variable "enable_dns_hostnames" {
+  description = "Enable DNS hostnames in the VPC"
+
+  type    = bool
+  default = true
 }
 
 variable "tags" {

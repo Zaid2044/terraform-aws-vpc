@@ -34,4 +34,11 @@ locals {
       name = "${local.name_prefix}-private-db-subnet-${key}"
     }
   }
+
+  vpc_name = "${local.name_prefix}-vpc"
+
+  igw_name = "${local.name_prefix}-igw"
+
+  public_route_table_name  = "${local.name_prefix}-public-rt"
+  private_route_table_name = "${local.name_prefix}-private-rt"
 }

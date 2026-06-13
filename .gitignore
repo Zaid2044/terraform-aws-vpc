@@ -45,21 +45,3 @@ Thumbs.db
 
 # Checkov
 .checkov/
-
-# tfsec
-.tfsec/
-
-# Terragrunt
-.terragrunt-cache/
-
-# Testing
-test-results/
-
-# Environment files
-.env
-.env.*
-
-# Local examples state
-examples/**/.terraform/
-examples/**/*.tfstate
-examples/**/*.tfstate.*
