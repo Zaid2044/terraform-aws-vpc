@@ -45,3 +45,4 @@ Thumbs.db
 
 # Checkov
 .checkov/
+.terraform.lock.hcl
