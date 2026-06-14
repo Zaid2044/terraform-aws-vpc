@@ -31,7 +31,7 @@ variable "vpc_cidr" {
 variable "availability_zones" {
   description = "List of Availability Zones"
 
-  type = list(string)
+  type = map(string)
 
   validation {
     condition     = length(var.availability_zones) >= 2
